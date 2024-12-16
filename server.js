@@ -11,11 +11,10 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-// Load the logger first so all (static) HTTP requests are logged to STDOUT
-// 'dev' = Concise output colored by response status for development use.
-//         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
+// Middleware
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(
   '/styles',
   sassMiddleware({
@@ -24,30 +23,47 @@ app.use(
     isSass: false, // false => scss, true => sass
   })
 );
-app.use(express.static('public'));
+app.use('/public', express.static(__dirname + '/public'));
 
-// Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
+// Routes
 const userApiRoutes = require('./routes/users-api');
-const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
+const dashboardApiRoutes = require('./routes/dashboard-api');
+const inventoryApiRoutes = require('./routes/inventory-api');
+const analyticsApiRoutes = require('./routes/analytics-api');
 
-// Mount all resource routes
-// Note: Feel free to replace the example routes below with your own
-// Note: Endpoints that return data (eg. JSON) usually start with `/api`
 app.use('/api/users', userApiRoutes);
-app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
-// Note: mount other resources here, using the same pattern above
-
-// Home page
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
+app.use('/api/dashboard', dashboardApiRoutes);
+app.use('/api/inventory', inventoryApiRoutes);
+app.use('/api/analytics', analyticsApiRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');
 });
 
+app.get('/orders', (req, res) => {
+  res.render('orders');
+});
+
+app.get('/admin', (req, res) => {
+  res.redirect('/admin-dashboard');
+});
+
+app.get('/admin-dashboard', (req, res) => {
+  res.render('admin_dashboard');
+});
+
+// Handle 404 errors
+app.use((req, res) => {
+  res.status(404).send("Sorry, page not found.");
+});
+
+// Start server
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
+
+
+
+

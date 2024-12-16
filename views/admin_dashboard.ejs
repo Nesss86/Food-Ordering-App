@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Birdie Num Num</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <script defer src="/scripts/dashboard.js"></script>
+</head>
+<body>
+  <div id="admin-dashboard">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <ul>
+        <li><a href="#" class="nav-link active" data-section="dashboard">Dashboard</a></li>
+        <li><a href="#" class="nav-link" data-section="orders">Manage Orders</a></li>
+        <li><a href="#" class="nav-link" data-section="food-items">Manage Food Items</a></li>
+        <li><a href="#" class="nav-link" data-section="analytics">User Analytics</a></li>
+      </ul>
+    </nav>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard-section" class="content-section">
+      <h1>Dashboard</h1>
+      <div class="dashboard-grid">
+        <div class="dashboard-item total-sales">
+          <h2>Total Sales</h2>
+          <p>Loading...</p>
+        </div>
+        <div class="dashboard-item total-orders">
+          <h2>Total Orders</h2>
+          <p>Loading...</p>
+        </div>
+        <div class="dashboard-item most-sold-item">
+          <h2>Most Sold Item</h2>
+          <img src="https://via.placeholder.com/150" alt="Most Sold Item">
+          <p>Loading...</p>
+        </div>
+        <div class="dashboard-item active-users">
+          <h2>Active Users</h2>
+          <p>Loading...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Management Section -->
+    <div id="orders-section" class="content-section" style="display: none;">
+      <h1>Manage Orders</h1>
+      <div id="orders">
+        <div class="order">
+          <p>Order #1: John Doe - Cheeseburger</p>
+          <button class="approve">Approve</button>
+          <button class="reject">Reject</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manage Food Items Section -->
+    <div id="food-items-section" class="content-section" style="display: none;">
+      <h1>Manage Food Items</h1>
+      <p>Feature Coming Soon!</p>
+    </div>
+
+    <!-- User Analytics Section -->
+    <div id="analytics-section" class="content-section" style="display: none;">
+      <h1>User Analytics</h1>
+      <p>Loading Analytics...</p>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

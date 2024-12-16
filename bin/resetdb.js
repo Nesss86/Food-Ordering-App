@@ -6,46 +6,59 @@ const fs = require('fs');
 const chalk = require('chalk');
 const db = require('../db/connection');
 
-// PG connection setup
-// const connectionString = process.env.DATABASE_URL ||
-//   `postgresql://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?sslmode=disable`;
-// const client = new Client();
+// Helper function to load files in a specific folder
+const loadFiles = async (folderPath, fileType) => {
+  const filenames = fs.readdirSync(folderPath).filter((fn) => fn.endsWith('.sql'));
+  console.log(chalk.cyan(`-> Loading ${fileType} Files ...`));
 
-// Loads the schema files from db/schema
+  for (const fn of filenames) {
+    const sql = fs.readFileSync(`${folderPath}/${fn}`, 'utf8');
+    console.log(`\t-> Running ${chalk.green(fn)}`);
+    await db.query(sql).catch((err) => {
+      console.error(chalk.red(`Failed to run ${fn}: ${err.message}`));
+      throw err;
+    });
+  }
+};
+
+// Function to run schema files (in correct order)
 const runSchemaFiles = async () => {
-  console.log(chalk.cyan(`-> Loading Schema Files ...`));
-  const schemaFilenames = fs.readdirSync('./db/schema');
-
-  for (const fn of schemaFilenames) {
-    const sql = fs.readFileSync(`./db/schema/${fn}`, 'utf8');
-    console.log(`\t-> Running ${chalk.green(fn)}`);
-    await db.query(sql);
-  }
+  await loadFiles('./db/schema', 'Schema');
 };
 
+// Function to run seed files (in correct order)
 const runSeedFiles = async () => {
-  console.log(chalk.cyan(`-> Loading Seeds ...`));
-  const schemaFilenames = fs.readdirSync('./db/seeds');
-
-  for (const fn of schemaFilenames) {
-    const sql = fs.readFileSync(`./db/seeds/${fn}`, 'utf8');
-    console.log(`\t-> Running ${chalk.green(fn)}`);
-    await db.query(sql);
-  }
+  await loadFiles('./db/seeds', 'Seed');
 };
 
+// Main function to reset the database
 const runResetDB = async () => {
   try {
-    process.env.DB_HOST &&
-      console.log(`-> Connecting to PG on ${process.env.DB_HOST} as ${process.env.DB_USER}...`);
+    // Check database connection
+    if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_NAME) {
+      throw new Error('Missing required environment variables (DB_HOST, DB_USER, DB_NAME)');
+    }
 
+    console.log(
+      chalk.blue(
+        `-> Connecting to PG on ${process.env.DB_HOST}:${process.env.DB_PORT || 5432} as ${
+          process.env.DB_USER
+        }...`
+      )
+    );
+
+    // Run schema and seed files
     await runSchemaFiles();
     await runSeedFiles();
-    process.exit();
+
+    console.log(chalk.green('-> Database reset successfully!'));
+    process.exit(0);
   } catch (err) {
-    console.error(chalk.red(`Failed due to error: ${err}`));
-    process.exit();
+    console.error(chalk.red(`Failed to reset database: ${err.message}`));
+    process.exit(1);
   }
 };
 
+// Run the reset database script
 runResetDB();
+

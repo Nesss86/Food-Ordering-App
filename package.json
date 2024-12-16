@@ -1,26 +1,44 @@
 {
-  "name": "node-skeleton",
+  "name": "skeleton",
   "version": "1.0.0",
-  "description": "",
+  "description": "LHL Node Skeleton =========",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "local": "./node_modules/.bin/nodemon -L --ignore public/",
+    "local": "nodemon -L --ignore public/",
     "db:reset": "node bin/resetdb.js"
   },
   "author": "Lighthouse Labs",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.3",
     "chalk": "^2.4.2",
+    "chart.js": "^4.4.7",
     "dotenv": "^2.0.0",
     "ejs": "^2.6.2",
-    "express": "^4.17.1",
+    "express": "^4.21.2",
     "morgan": "^1.9.1",
-    "pg": "^8.5.0",
-    "sass": "^1.35.1"
+    "pg": "^8.13.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.10"
-  }
+    "nodemon": "^2.0.10",
+    "stylelint": "^16.12.0",
+    "stylelint-scss": "^6.10.0"
+  },
+  "bin": {
+    "skeleton": "bin/resetdb.js"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nesss86/Food-Ordering-App.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Nesss86/Food-Ordering-App/issues"
+  },
+  "homepage": "https://github.com/Nesss86/Food-Ordering-App#readme"
 }
