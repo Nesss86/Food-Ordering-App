@@ -5,7 +5,7 @@ require('dotenv').config();
 const sassMiddleware = require('./lib/sass-middleware');
 const express = require('express');
 const morgan = require('morgan');
-const cookieSession = require('cookie-session')
+const cookieSession = require('cookie-session');
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -38,14 +38,14 @@ const usersRoutes = require('./routes/users');
 const dashboardApiRoutes = require('./routes/dashboard-api');
 const inventoryApiRoutes = require('./routes/inventory-api');
 const analyticsApiRoutes = require('./routes/analytics-api');
-const menuPageApiRoutes = require('./routes/menu_page-api');
+const menuPageRoutes = require('./routes/menu_page');
 
 app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/api/dashboard', dashboardApiRoutes);
 app.use('/api/inventory', inventoryApiRoutes);
 app.use('/api/analytics', analyticsApiRoutes);
-app.use('/menu_page', menuPageApiRoutes);
+app.use('/menu_page', menuPageRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');
