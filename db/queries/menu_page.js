@@ -5,6 +5,6 @@ const getAllMenuItems = function() {
   .then((res) => res.rows);
 };
 
-module.exports = {
+module.exports = { 
   getAllMenuItems
 };
