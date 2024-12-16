@@ -23,6 +23,12 @@ app.use(
     isSass: false, // false => scss, true => sass
   })
 );
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["key1"],
+  })
+);
 app.use('/public', express.static(__dirname + '/public'));
 
 // Routes
@@ -31,12 +37,14 @@ const usersRoutes = require('./routes/users');
 const dashboardApiRoutes = require('./routes/dashboard-api');
 const inventoryApiRoutes = require('./routes/inventory-api');
 const analyticsApiRoutes = require('./routes/analytics-api');
+const menuPageApiRoutes = require('./routes/menu_page-api');
 
 app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/api/dashboard', dashboardApiRoutes);
 app.use('/api/inventory', inventoryApiRoutes);
 app.use('/api/analytics', analyticsApiRoutes);
+app.use('/menu_page', menuPageApiRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');
