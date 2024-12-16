@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 // Simplified route for logging in 
-app.get('/login/:id', (req, res) => {
+router.get('/login/:id', (req, res) => {
   // using encrypted cookies
   req.session.user_id = req.params.id;
   // send the user somewhere
@@ -21,9 +21,9 @@ app.get('/login/:id', (req, res) => {
 });
 
 // Route for logout
-router.post('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
   req.session = null;
-  res.send({});
+  res.redirect('/');
 });
 
 
