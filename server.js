@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 // Web server config
-const sassMiddleware = require('./lib/sass-middleware');
+//const sassMiddleware = require('./lib/sass-middleware');
 const express = require('express');
 const morgan = require('morgan');
 
@@ -15,28 +15,33 @@ app.set('view engine', 'ejs');
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(
-  '/styles',
-  sassMiddleware({
-    source: __dirname + '/styles',
-    destination: __dirname + '/public/styles',
-    isSass: false, // false => scss, true => sass
-  })
-);
-app.use('/public', express.static(__dirname + '/public'));
+//app.use(
+  //'/styles',
+  //sassMiddleware({
+    //source: __dirname + '/styles',
+    //destination: __dirname + '/public/styles',
+    //isSass: false, // false => scss, true => sass
+  //})
+//);
+app.use(express.static('public'));
+
+app.use((req, res, next) => {
+  console.log(`Request for ${req.url}`);
+  next();
+});
 
 // Routes
-const userApiRoutes = require('./routes/users-api');
+
 const usersRoutes = require('./routes/users');
 const dashboardApiRoutes = require('./routes/dashboard-api');
 const inventoryApiRoutes = require('./routes/inventory-api');
-const analyticsApiRoutes = require('./routes/analytics-api');
 
-app.use('/api/users', userApiRoutes);
+
+
 app.use('/users', usersRoutes);
 app.use('/api/dashboard', dashboardApiRoutes);
 app.use('/api/inventory', inventoryApiRoutes);
-app.use('/api/analytics', analyticsApiRoutes);
+
 
 app.get('/', (req, res) => {
   res.render('index');
