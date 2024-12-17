@@ -5,7 +5,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cookieSession = require('cookie-session');
-const { Pool } = require('pg'); // Add PG for database
+const { Pool } = require('pg');
 
 // Server configuration
 const PORT = process.env.PORT || 8080;
@@ -41,6 +41,8 @@ const customerOrderRoutes = require('./routes/customer_orders');
 const adminOrderRoutes = require('./routes/admin_orders');
 const userRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin');
+const rootRoutes = require('./routes/root'); // New file for '/' route
+const menuRoutes = require('./routes/menu'); // New file for '/menu' route
 
 app.use('/api/orders', ordersApiRoutes);
 app.use('/api/inventory', inventoryApiRoutes);
@@ -49,37 +51,8 @@ app.use('/customer_orders', customerOrderRoutes);
 app.use('/admin_orders', adminOrderRoutes);
 app.use('/users', userRoutes);
 app.use('/admin', adminRoutes);
-
-// Root route
-app.get('/', (req, res) => {
-  res.render('index');
-});
-
-// New /menu route
-app.get('/menu', (req, res) => {
-  const query = `
-    SELECT id, name, price, image_path, category
-    FROM food_items
-    WHERE is_available = TRUE;
-  `;
-
-  db.query(query)
-    .then(result => {
-      const foodItems = result.rows.reduce((acc, item) => {
-        // Ensure price is a float
-        item.price = parseFloat(item.price);
-        acc[item.category] = acc[item.category] || [];
-        acc[item.category].push(item);
-        return acc;
-      }, {});
-      res.render('menu', { foodItems }); // Pass the food items to EJS
-    })
-    .catch(err => {
-      console.error("Error fetching menu items:", err.message);
-      res.status(500).send("Internal Server Error");
-    });
-});
-
+app.use('/', rootRoutes); // Root route
+app.use('/menu', menuRoutes); // Menu route
 
 // 404 Error handler
 app.use((req, res) => res.status(404).send("Sorry, page not found."));
@@ -88,6 +61,7 @@ app.use((req, res) => res.status(404).send("Sorry, page not found."));
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
 
 
