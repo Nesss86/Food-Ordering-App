@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ordersQueries = require('../db/queries/customer_orders'); // Correctly import the queries
+const ordersQueries = require('../db/queries/admin_orders'); // Correctly import the queries
 
 // Fetch Pending Orders (limit to 5 for Manage Orders)
 router.get('/', (req, res) => {

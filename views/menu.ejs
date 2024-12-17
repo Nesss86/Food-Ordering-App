@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu</title>
+  <link rel="stylesheet" href="/styles/main.css"> <!-- Main styles -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="/scripts/cart.js" defer></script>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/menu" class="nav-link active">Menu</a></li>
+      <li><a href="/admin-dashboard" class="nav-link">Admin Dashboard</a></li>
+    </ul>
+    <div class="nav-logo">
+      <img src="/images/Birdie_Num_Num_Logo_1.png" alt="Menu Logo">
+    </div>
+  </nav>
+
+  <!-- Menu Carousel -->
+  <main class="container">
+    <h1 class="text-center my-4">Our Menu</h1>
+    <div id="menuCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <% let firstCategory = true; %>
+        <% Object.keys(foodItems).forEach(category => { %>
+          <div class="carousel-item <%= firstCategory ? 'active' : '' %>">
+            <% firstCategory = false; %>
+            <h2 class="text-center my-3"><%= category %></h2>
+            <div class="row">
+              <% foodItems[category].forEach(item => { %>
+                <div class="col-md-3 text-center">
+                  <img src="<%= item.image_path %>" alt="<%= item.name %>" class="img-fluid mb-2" style="height: 200px; object-fit: cover;">
+                  <h4><%= item.name %></h4>
+                  <p>$<%= item.price.toFixed(2) %></p>
+                  <button class="btn btn-primary" onclick="addToCart(<%= item.id %>, '<%= item.name %>', <%= item.price %>)">Add to Cart</button>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <!-- Custom Carousel Controls -->
+      <a class="carousel-control-prev" href="#menuCarousel" role="button" data-slide="prev">
+        <span class="custom-arrow-left" aria-hidden="true">&larr;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#menuCarousel" role="button" data-slide="next">
+        <span class="custom-arrow-right" aria-hidden="true">&rarr;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <!-- Cart Section -->
+    <section id="cart" class="mt-5">
+      <h2>Your Order</h2>
+      <ul id="cart-items" class="list-group mb-3"></ul>
+      <h4>Total: $<span id="cart-total">0.00</span></h4>
+      <button class="btn btn-success" onclick="submitOrder()">Submit Order</button>
+    </section>
+  </main>
+
+  <!-- Bootstrap and JS Libraries -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
