@@ -37,7 +37,8 @@ const inventoryApiRoutes = require('./routes/inventory-api');
 // const analyticsApiRoutes = require('./routes/analytics-api');
 const menuPageRoutes = require('./routes/menu_page');
 const orderRoutes = require('./routes/orders');
-const adminRoutes = require('./routes/admin');
+const userRoutes = require('./routes/users');
+// const adminRoutes = require('./routes/admin');
 
 // Mount API routes
 app.use('/api/orders', ordersApiRoutes);
@@ -45,20 +46,23 @@ app.use('/api/inventory', inventoryApiRoutes);
 // app.use('/api/analytics', analyticsApiRoutes);
 app.use('/menu_page', menuPageRoutes);
 app.use('/orders', orderRoutes);
-app.use('/admin', adminRoutes);
+app.use('/users', userRoutes);
+// app.use('/admin', adminRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');
 });
 
 app.get('/orders', (req, res) => {
-  res.render('orders');
+  res.redirect('/menu_page'); // redirect to menu_page
 });
 
+// admin routes need to be moved to routes/admin.js
 app.get('/admin', (req, res) => {
   res.redirect('/admin-dashboard');
 });
 
+// to be changed to admin/dashboard
 app.get('/admin-dashboard', (req, res) => {
   res.render('admin_dashboard');
 });
