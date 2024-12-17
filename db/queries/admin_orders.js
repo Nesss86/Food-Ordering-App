@@ -42,7 +42,5 @@ const getOrderHistory = (search) => {
   return db.query(query, [`%${search}%`]).then(res => res.rows);
 };
 
-module.exports = { getOrders, updateOrderStatus, getOrderHistory };
-
-
-
+module.exports = { getOrders, updateOrderStatus, getOrderHistory
+};

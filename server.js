@@ -36,7 +36,8 @@ const ordersApiRoutes = require('./routes/orders-api');
 const inventoryApiRoutes = require('./routes/inventory-api');
 // const analyticsApiRoutes = require('./routes/analytics-api');
 const menuPageRoutes = require('./routes/menu_page');
-const orderRoutes = require('./routes/orders');
+const customerOrderRoutes = require('./routes/customer_orders');
+const adminOrderRoutes = require('./routes/admin_orders');
 const userRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin');
 
@@ -45,7 +46,8 @@ app.use('/api/orders', ordersApiRoutes);
 app.use('/api/inventory', inventoryApiRoutes);
 // app.use('/api/analytics', analyticsApiRoutes);
 app.use('/menu_page', menuPageRoutes);
-app.use('/orders', orderRoutes);
+app.use('/customer_orders', customerOrderRoutes);
+app.use('/admin_orders', adminOrderRoutes);
 app.use('/users', userRoutes);
 app.use('/admin', adminRoutes);
 
