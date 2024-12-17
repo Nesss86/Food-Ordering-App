@@ -15,14 +15,14 @@ app.set('view engine', 'ejs');
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(
-  '/styles',
-  sassMiddleware({
-    source: __dirname + '/styles',
-    destination: __dirname + '/public/styles',
-    isSass: false, // false => scss, true => sass
-  })
-);
+// app.use(
+//   '/styles',
+//   sassMiddleware({
+//     source: __dirname + '/styles',
+//     destination: __dirname + '/public/styles',
+//     isSass: false, // false => scss, true => sass
+//   })
+// );
 app.use(
   cookieSession({
     name: "session",
@@ -34,7 +34,7 @@ app.use('/public', express.static(__dirname + '/public'));
 // Routes
 const ordersApiRoutes = require('./routes/orders-api');
 const inventoryApiRoutes = require('./routes/inventory-api');
-const analyticsApiRoutes = require('./routes/analytics-api');
+// const analyticsApiRoutes = require('./routes/analytics-api');
 const menuPageRoutes = require('./routes/menu_page');
 const orderRoutes = require('./routes/orders');
 const adminRoutes = require('./routes/admin');
@@ -42,7 +42,7 @@ const adminRoutes = require('./routes/admin');
 // Mount API routes
 app.use('/api/orders', ordersApiRoutes);
 app.use('/api/inventory', inventoryApiRoutes);
-app.use('/api/analytics', analyticsApiRoutes);
+// app.use('/api/analytics', analyticsApiRoutes);
 app.use('/menu_page', menuPageRoutes);
 app.use('/orders', orderRoutes);
 app.use('/admin', adminRoutes);
