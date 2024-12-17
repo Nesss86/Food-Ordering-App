@@ -27,24 +27,21 @@
     <div id="orders-section" class="content-section">
       <h1>Manage Orders</h1>
       <div id="orders-container">
-        <div class="order">
-          <p><strong>Customer:</strong> John Doe</p>
-          <p><strong>Items:</strong> Pizza</p>
-          <p><strong>Time to Complete:</strong> 15 min</p>
-          <button class="approve-btn">Approve</button>
-          <button class="reject-btn">Reject</button>
-        </div>
+        <!-- Orders will be dynamically loaded here -->
       </div>
       <h2>Order Status</h2>
       <table id="order-status-table">
         <thead>
           <tr>
-            <th>Order</th>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Items</th>
             <th>Status</th>
-            <th>Time</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <!-- Approved/Rejected orders will be dynamically added here -->
+        </tbody>
       </table>
     </div>
 
@@ -56,25 +53,11 @@
           <tr>
             <th>Item</th>
             <th>Quantity</th>
-            <th>Status</th>
+            <th>Availability</th>
           </tr>
         </thead>
         <tbody id="inventory-table">
-          <tr>
-            <td>Burgers</td>
-            <td>25</td>
-            <td>In Stock</td>
-          </tr>
-          <tr>
-            <td>Fries</td>
-            <td>10</td>
-            <td>Low Stock</td>
-          </tr>
-          <tr>
-            <td>Pizza</td>
-            <td>5</td>
-            <td>Out of Stock</td>
-          </tr>
+          <!-- Inventory data will be dynamically loaded here -->
         </tbody>
       </table>
     </div>
@@ -82,29 +65,36 @@
     <!-- Order History Section -->
     <div id="history-section" class="content-section" style="display: none;">
       <h1>Order History</h1>
-      <input type="text" id="history-search" placeholder="Search Orders">
+      <!-- Search Input -->
+      <input type="text" id="history-search" placeholder="Search orders by customer or item">
       <table>
         <thead>
           <tr>
             <th>Order ID</th>
             <th>Customer</th>
             <th>Items</th>
-            <th>Status</th>
+            <th>Quantity</th>
+            <th>Time Placed</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>101</td>
-            <td>Jane Doe</td>
-            <td>Burger</td>
-            <td>Approved</td>
-          </tr>
+        <tbody id="history-table">
+          <!-- Order history data will be dynamically loaded here -->
         </tbody>
       </table>
     </div>
   </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,3 +1,5 @@
+TRUNCATE TABLE customers RESTART IDENTITY CASCADE;
+
 INSERT INTO Customers (name, email, password, phone_number, signup_date) VALUES
 ('Oscar Gutierrez', 'oscar.gutierrez@gmail.com', 'password123', '179-226-6929', '2024-08-18'),
 ('Crystal Garcia', 'crystal.garcia@gmail.com', 'password123', '+1-821-462-9797', '2024-01-04'),

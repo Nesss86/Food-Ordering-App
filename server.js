@@ -1,73 +1,42 @@
-// load .env data into process.env
+// Load environment variables
 require('dotenv').config();
 
-// Web server config
-//const sassMiddleware = require('./lib/sass-middleware');
+// Dependencies
 const express = require('express');
 const morgan = require('morgan');
 
+// Server configuration
 const PORT = process.env.PORT || 8080;
 const app = express();
 
+// Middleware setup
 app.set('view engine', 'ejs');
-
-// Middleware
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//app.use(
-  //'/styles',
-  //sassMiddleware({
-    //source: __dirname + '/styles',
-    //destination: __dirname + '/public/styles',
-    //isSass: false, // false => scss, true => sass
-  //})
-//);
-app.use(express.static('public'));
-
-app.use((req, res, next) => {
-  console.log(`Request for ${req.url}`);
-  next();
-});
+app.use(express.static('public')); // Serve static files from the "public" folder
 
 // Routes
-
-const usersRoutes = require('./routes/users');
-const dashboardApiRoutes = require('./routes/dashboard-api');
+const ordersApiRoutes = require('./routes/orders-api');
 const inventoryApiRoutes = require('./routes/inventory-api');
 
-
-
-app.use('/users', usersRoutes);
-app.use('/api/dashboard', dashboardApiRoutes);
+// Mount API routes
+app.use('/api/orders', ordersApiRoutes);
 app.use('/api/inventory', inventoryApiRoutes);
 
+// View routes
+app.get('/', (req, res) => res.render('index'));
+app.get('/admin-dashboard', (req, res) => res.render('admin_dashboard'));
 
-app.get('/', (req, res) => {
-  res.render('index');
-});
-
-app.get('/orders', (req, res) => {
-  res.render('orders');
-});
-
-app.get('/admin', (req, res) => {
-  res.redirect('/admin-dashboard');
-});
-
-app.get('/admin-dashboard', (req, res) => {
-  res.render('admin_dashboard');
-});
-
-// Handle 404 errors
-app.use((req, res) => {
-  res.status(404).send("Sorry, page not found.");
-});
+// 404 Error handler
+app.use((req, res) => res.status(404).send("Sorry, page not found."));
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
+
+
 
 
 
