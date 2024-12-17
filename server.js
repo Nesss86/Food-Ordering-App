@@ -37,6 +37,7 @@ const inventoryApiRoutes = require('./routes/inventory-api');
 const analyticsApiRoutes = require('./routes/analytics-api');
 const menuPageRoutes = require('./routes/menu_page');
 const orderRoutes = require('./routes/orders');
+const adminRoutes = require('./routes/admin');
 
 // Mount API routes
 app.use('/api/orders', ordersApiRoutes);
@@ -44,6 +45,7 @@ app.use('/api/inventory', inventoryApiRoutes);
 app.use('/api/analytics', analyticsApiRoutes);
 app.use('/menu_page', menuPageRoutes);
 app.use('/orders', orderRoutes);
+app.use('/admin', adminRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');
