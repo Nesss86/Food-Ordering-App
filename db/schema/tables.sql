@@ -46,7 +46,7 @@ CREATE TABLE orders (
     ID SERIAL PRIMARY KEY,
     customer_id INT NOT NULL,
     time_placed TIMESTAMP NOT NULL DEFAULT NOW(),
-    time_ready TIMESTAMP,
+    time_to_get_ready INTEGER,
     order_status VARCHAR(20) DEFAULT 'pending',
     total_price DECIMAL(10, 2),
     FOREIGN KEY (customer_id) REFERENCES Customers(ID) ON DELETE CASCADE
