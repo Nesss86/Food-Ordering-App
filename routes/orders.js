@@ -30,8 +30,7 @@ router.post('/' , (req, res) => {
     res.send(order);
    })
    .catch((e) => {
-    console.error(e);
-    res.send(e);
-   });
+    console.
+   })
 })
 module.exports = router;
