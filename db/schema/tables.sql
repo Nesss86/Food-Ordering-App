@@ -1,7 +1,4 @@
 -- Drop existing tables if they exist
-DROP TABLE IF EXISTS Analytics CASCADE;
-DROP TABLE IF EXISTS Activity_Log CASCADE;
-DROP TABLE IF EXISTS Sales_Audit CASCADE;
 DROP TABLE IF EXISTS Order_Items CASCADE;
 DROP TABLE IF EXISTS Orders CASCADE;
 DROP TABLE IF EXISTS Food_Items CASCADE;
@@ -86,37 +83,4 @@ CREATE TABLE Order_Items (
     quantity INT NOT NULL,
     FOREIGN KEY (order_id) REFERENCES Orders(ID) ON DELETE CASCADE,
     FOREIGN KEY (food_id) REFERENCES Food_Items(ID) ON DELETE RESTRICT
-);
-
--- Create Sales_Audit Table
-CREATE TABLE Sales_Audit (
-    ID SERIAL PRIMARY KEY,
-    order_id INT NOT NULL,
-    customer_id INT NOT NULL,
-    food_id INT NOT NULL,
-    quantity INT NOT NULL,
-    total_price DECIMAL(10, 2) NOT NULL,
-    sale_date TIMESTAMP NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(ID) ON DELETE CASCADE,
-    FOREIGN KEY (customer_id) REFERENCES Customers(ID) ON DELETE CASCADE,
-    FOREIGN KEY (food_id) REFERENCES Food_Items(ID) ON DELETE CASCADE
-);
-
--- Create Activity_Log Table
-CREATE TABLE Activity_Log (
-    ID SERIAL PRIMARY KEY,
-    customer_id INT NOT NULL,
-    activity_type VARCHAR(50) NOT NULL,
-    activity_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES Customers(ID) ON DELETE CASCADE
-);
-
--- Create Analytics Table
-CREATE TABLE Analytics (
-    ID SERIAL PRIMARY KEY,
-    customer_id INT NOT NULL,
-    metric_type VARCHAR(50) NOT NULL CHECK (metric_type IN ('total_spent', 'orders_placed', 'items_purchased')),
-    metric_value DECIMAL(10, 2) NOT NULL,
-    record_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    FOREIGN KEY (customer_id) REFERENCES Customers(ID) ON DELETE CASCADE
 );
