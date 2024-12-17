@@ -1,16 +1,12 @@
 -- Drop existing tables if they exist
-DROP TABLE IF EXISTS Order_Items CASCADE;
-DROP TABLE IF EXISTS Orders CASCADE;
-DROP TABLE IF EXISTS Food_Items CASCADE;
-DROP TABLE IF EXISTS Admins CASCADE;
-DROP TABLE IF EXISTS Customers CASCADE;
+DROP TABLE IF EXISTS order_items CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS food_items CASCADE;
+DROP TABLE IF EXISTS customers CASCADE;
 
 -- Reset sequences for all tables
 DO $$
 BEGIN
-    IF EXISTS (SELECT 1 FROM pg_class WHERE relname = 'admins_id_seq') THEN
-        ALTER SEQUENCE admins_id_seq RESTART WITH 1;
-    END IF;
     IF EXISTS (SELECT 1 FROM pg_class WHERE relname = 'customers_id_seq') THEN
         ALTER SEQUENCE customers_id_seq RESTART WITH 1;
     END IF;
@@ -23,28 +19,10 @@ BEGIN
     IF EXISTS (SELECT 1 FROM pg_class WHERE relname = 'order_items_id_seq') THEN
         ALTER SEQUENCE order_items_id_seq RESTART WITH 1;
     END IF;
-    IF EXISTS (SELECT 1 FROM pg_class WHERE relname = 'sales_audit_id_seq') THEN
-        ALTER SEQUENCE sales_audit_id_seq RESTART WITH 1;
-    END IF;
-    IF EXISTS (SELECT 1 FROM pg_class WHERE relname = 'activity_log_id_seq') THEN
-        ALTER SEQUENCE activity_log_id_seq RESTART WITH 1;
-    END IF;
-    IF EXISTS (SELECT 1 FROM pg_class WHERE relname = 'analytics_id_seq') THEN
-        ALTER SEQUENCE analytics_id_seq RESTART WITH 1;
-    END IF;
 END $$;
 
--- Create Admins Table
-CREATE TABLE Admins (
-    ID SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role VARCHAR(20) DEFAULT 'admin'
-);
-
 -- Create Customers Table
-CREATE TABLE Customers (
+CREATE TABLE customers (
     ID SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -54,7 +32,7 @@ CREATE TABLE Customers (
 );
 
 -- Create Food_Items Table
-CREATE TABLE Food_Items (
+CREATE TABLE food_items (
     ID SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
@@ -64,19 +42,18 @@ CREATE TABLE Food_Items (
 );
 
 -- Create Orders Table
-CREATE TABLE Orders (
+CREATE TABLE orders (
     ID SERIAL PRIMARY KEY,
     customer_id INT NOT NULL,
     time_placed TIMESTAMP NOT NULL DEFAULT NOW(),
-    time_ready TIMESTAMP,
-    confirmed BOOLEAN DEFAULT FALSE,
+    time_to_get_ready INTEGER,
     order_status VARCHAR(20) DEFAULT 'pending',
     total_price DECIMAL(10, 2),
     FOREIGN KEY (customer_id) REFERENCES Customers(ID) ON DELETE CASCADE
 );
 
 -- Create Order_Items Table
-CREATE TABLE Order_Items (
+CREATE TABLE order_items (
     ID SERIAL PRIMARY KEY,
     order_id INT NOT NULL,
     food_id INT NOT NULL,

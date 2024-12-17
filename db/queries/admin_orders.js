@@ -15,12 +15,23 @@ const getOrders = () => {
 };
 
 // Update order status (approve/reject)
-const updateOrderStatus = (orderId, status) => {
-  return db.query(`
+const updateOrderStatus = (orderId, status, timeToGetReady) => {
+  const queryString = `
     UPDATE orders
-    SET order_status = $2
-    WHERE id = $1;
-  `, [orderId, status]);
+    SET order_status = $2`
+
+    if (timeToGetReady !== undefined && timeToGetReady !== null) {
+      queryString += `, time_to_get_ready = $3`
+    }
+
+    queryString += `WHERE id = $1;`
+
+    const params = [orderId, status];
+    if (timeToGetReady !== undefined && timeToGetReady !== null) {
+      params.push(timeToGetReady);
+    }
+
+  return db.query(queryString, params);
 };
 
 // Fetch order history with optional search
