@@ -15,11 +15,13 @@
     "body-parser": "^1.20.3",
     "chalk": "^2.4.2",
     "chart.js": "^4.4.7",
+    "cookie-session": "^2.1.0",
     "dotenv": "^2.0.0",
     "ejs": "^2.6.2",
     "express": "^4.21.2",
     "morgan": "^1.9.1",
-    "pg": "^8.13.1"
+    "pg": "^8.13.1",
+    "sass": "^1.83.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.10",

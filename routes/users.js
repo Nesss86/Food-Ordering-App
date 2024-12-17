@@ -10,6 +10,21 @@ const router  = express.Router();
 
 router.get('/', (req, res) => {
   res.render('users');
-}); 
+});
+
+// Simplified route for logging in
+router.get('/login/:id', (req, res) => {
+  // using encrypted cookies
+  req.session.user_id = req.params.id;
+  // send the user somewhere
+  res.redirect('/');
+});
+
+// Route for logout
+router.get('/logout', (req, res) => {
+  req.session = null;
+  res.redirect('/');
+});
+
 
 module.exports = router;
