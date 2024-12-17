@@ -1,3 +1,5 @@
+const db = require('../connection');
+
 const getOrders = () => {
   return db.query(`
     SELECT orders.id, customers.name AS customerName, food_items.name AS foodName, order_items.quantity
@@ -18,3 +20,28 @@ const updateOrderStatus = (orderId, status) => {
   `, [orderId, status]);
 };
 
+const addOrder = (order) => {
+ const {customer_id, time_placed, time_ready, order_status,
+  total_price } = order;
+
+  return db.query(
+    `INSERT INTO Orders (customer_id, time_placed, time_ready, order_status,
+  total_price)
+     VALUES ($1, $2, $3, $4, $5)
+     RETURNING *;
+     `, [customer_id, time_placed, time_ready, order_status,
+      total_price])
+      .then((result) => {
+        return result.rows[0];
+      })
+      .catch((err) => {
+        console.error(err.message);
+        throw err;
+      });
+};
+
+module.exports = {
+  getOrders,
+  updateOrderStatus,
+  addOrder
+}

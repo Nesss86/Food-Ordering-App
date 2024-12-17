@@ -39,6 +39,7 @@ const dashboardApiRoutes = require('./routes/dashboard-api');
 const inventoryApiRoutes = require('./routes/inventory-api');
 const analyticsApiRoutes = require('./routes/analytics-api');
 const menuPageRoutes = require('./routes/menu_page');
+const orderRoutes = require('./routes/orders');
 
 app.use('/api/users', userApiRoutes);
 app.use('/users', usersRoutes);
@@ -46,6 +47,7 @@ app.use('/api/dashboard', dashboardApiRoutes);
 app.use('/api/inventory', inventoryApiRoutes);
 app.use('/api/analytics', analyticsApiRoutes);
 app.use('/menu_page', menuPageRoutes);
+app.use('/orders', orderRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');
