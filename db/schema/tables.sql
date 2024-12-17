@@ -49,7 +49,7 @@ CREATE TABLE Customers (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    phone_number VARCHAR(15),
+    phone_number VARCHAR(16),
     signup_date DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
