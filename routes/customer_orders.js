@@ -1,6 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const customerOrderQueries = require('../db/queries/customer_orders');
+const createMessage =  require('../sms')
 
 // Post route for /orders
 router.post('/' , (req, res) => {
@@ -15,6 +16,7 @@ router.post('/' , (req, res) => {
    .addOrder(newOrder)
    .then((order) => {
     res.send(order);
+    createMessage("New order has been placed 😊");
    })
    .catch((e) => {
     console.error(e);
