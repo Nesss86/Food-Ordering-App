@@ -1,4 +1,4 @@
-INSERT INTO Order_Items (order_id, food_id, quantity) VALUES
+INSERT INTO order_items (order_id, food_id, quantity) VALUES
 (127, 6, 3),
 (309, 4, 3),
 (269, 7, 3),
