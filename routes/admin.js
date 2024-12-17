@@ -2,7 +2,7 @@ const express = require('express');
 const router  = express.Router();
 
 router.get('/', (req, res) => {
-  res.redirect('/admin-dashboard');
+  res.redirect('/admin/dashboard');
 });
 
 // to be changed to admin/dashboard

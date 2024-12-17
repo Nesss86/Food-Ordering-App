@@ -1,6 +1,6 @@
 const express = require('express');
 const router  = express.Router();
-const adminOrderQueries = require('../db/queries/customer_orders');
+const adminOrderQueries = require('../db/queries/admin_orders');
 
 router.get('/', (req, res) => {
   adminOrderQueries.getOrders() // A query to fetch all orders
