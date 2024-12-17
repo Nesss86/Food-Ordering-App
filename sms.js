@@ -20,6 +20,4 @@ async function createMessage(messageContent) {
   console.log(message.body);
 };
 
-createMessage('Your order is ready');
-
 module.exports = createMessage;
