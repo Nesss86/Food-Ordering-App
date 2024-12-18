@@ -20,13 +20,19 @@ $(document).ready(() => {
 
         // Create HTML for the order
         const orderHtml = `
-          <div class="order" data-id="${order.order_id}">
-            <p><strong>Customer:</strong> ${order.customername}</p>
-            <p><strong>Items:</strong> ${order.items}</p>
-            <p><strong>Time Placed:</strong> ${dateTime}</p>
-            <button class="approve-btn btn btn-success">Approve</button>
-            <button class="reject-btn btn btn-danger">Reject</button>
-          </div>
+          <form class="order-form" method="post" action="/admin_orders/${order.order_id}">
+            <input type="hidden" name="_method" value="PATCH">
+            <input type="hidden" name="status" value="">
+            <div class="order" data-id="${order.order_id}">
+              <p><strong>Customer:</strong> ${order.customername}</p>
+              <p><strong>Items:</strong> ${order.items}</p>
+              <p><strong>Time Placed:</strong> ${dateTime}</p>
+              <label for="readyAt-${order.order_id}"><strong>Time for order to get ready (in minutes):</strong></label>
+              <textarea id="readyAt-${order.order_id}" class="form-control" name="ready_at" rows="1" placeholder="Enter time"></textarea><br><br>
+              <button type="button" class="approve-btn btn btn-success">Approve</button>
+              <button type="button" class="reject-btn btn btn-danger">Reject</button>
+            </div>
+          </form>
         `;
         ordersContainer.append(orderHtml);
       });
@@ -48,30 +54,28 @@ $(document).ready(() => {
     tableBody.append(rowHtml);
   };
 
-  // Approve/Reject Orders
-  $('#orders-container').on('click', '.approve-btn, .reject-btn', function () {
-    const parent = $(this).closest('.order');
-    const orderId = parent.data('id');
-    const customer = parent.find('p').eq(0).text().replace('Customer: ', '');
-    const items = parent.find('p').eq(1).text().replace('Items: ', '');
-    const status = $(this).hasClass('approve-btn') ? 'approved' : 'rejected';
-    const readyAt = status === 'approved' ? '15' : null; // Default time to complete
-
-    $.ajax({
-      url: `/api/orders/${orderId}`,
-      method: 'PATCH',
-      contentType: 'application/json',
-      data: JSON.stringify({ status, ready_at: readyAt }),
-      success: () => {
-        updateOrderStatusTable(orderId, status, customer, items, readyAt ? `${readyAt} mins` : 'N/A');
-        parent.remove(); // Remove the order from "Manage Orders"
-      },
-      error: (err) => {
-        console.error(`Failed to update order ${orderId}:`, err.responseJSON?.error || err);
-        alert(`Failed to update order ${orderId}. Please try again.`);
-      }
-    });
+// Handle Approve/Reject Buttons
+$('#orders-container').on('click', '.approve-btn, .reject-btn', function () {
+  const form = $(this).closest('form');
+  const status = $(this).hasClass('approve-btn') ? 'approved' : 'rejected';
+  form.find('input[name="status"]').val(status); // Set the status in the hidden input
+  form.submit(); // Submit the form
+  $.ajax({
+    url: `/api/orders/${orderId}`,
+    method: 'PATCH',
+    contentType: 'application/json',
+    data: JSON.stringify({ status, ready_at: readyAt }),
+    success: () => {
+      updateOrderStatusTable(orderId, status, customer, items, readyAt ? `${readyAt} mins` : 'N/A');
+      parent.remove(); // Remove the order from "Manage Orders"
+    },
+    error: (err) => {
+      console.error(`Failed to update order ${orderId}:`, err.responseJSON?.error || err);
+      alert(`Failed to update order ${orderId}. Please try again.`);
+    }
   });
+});
+
 
   // Inventory Section
   const loadInventory = () => {
@@ -136,7 +140,6 @@ $(document).ready(() => {
   // Initial Load
   loadOrders(); // Load Manage Orders on page load
 });
-
 
 
 

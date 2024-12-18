@@ -3,10 +3,10 @@ const db = require('../connection');
 // Fetch 5 pending orders
 const getOrders = () => {
   return db.query(`
-    SELECT 
-      o.id AS order_id, 
-      c.name AS customername, 
-      STRING_AGG(fi.name || ' x ' || oi.quantity, ', ') AS items, 
+    SELECT
+      o.id AS order_id,
+      c.name AS customername,
+      STRING_AGG(fi.name || ' x ' || oi.quantity, ', ') AS items,
       o.time_placed
     FROM orders o
     JOIN customers c ON o.customer_id = c.id
@@ -20,7 +20,7 @@ const getOrders = () => {
 };
 
 // Update order status (approve/reject)
-const updateOrderStatus = (orderId, status, timeToGetReady) => {
+const updateOrderStatus = (orderId, status, readyAt) => {
   let queryString = `
     UPDATE orders
     SET order_status = $2`;

@@ -23,6 +23,11 @@ router.patch('/:id', (req, res) => {
     return res.status(400).json({ error: "Invalid status. Use 'approved' or 'rejected'." });
   }
 
+  // Validate ready_at if status is approved
+  if (status === 'approved' && (!ready_at || isNaN(parseInt(ready_at, 10)))) {
+    return res.status(400).json({ error: "Invalid ready_at time. Please provide a valid number." });
+  }
+
   adminOrderQueries.updateOrderStatus(id, status, ready_at)
     .then(updatedOrder => {
       if (status === 'approved') {
