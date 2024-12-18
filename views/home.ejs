@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <style>
+    body {
+      background-color: #89997a; /* Navbar color */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Shadows Into Light', sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    .welcome-container {
+      position: relative;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .logo {
+      width: 200px;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .logo.left {
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+
+    .logo.right {
+      transform: translateX(50%);
+      opacity: 0;
+    }
+
+    .slogan {
+      font-size: 2rem;
+      margin-top: 20px;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .welcome-container:hover .logo {
+      opacity: 1;
+      transform: none;
+    }
+
+    .welcome-container:hover .slogan {
+      opacity: 0;
+    }
+
+    .menu-link {
+      display: none;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: white;
+      background-color: #4caf50; /* Button color */
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+
+    .welcome-container:hover .menu-link {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome-container" onclick="window.location.href='/menu'">
+    <img src="/images/Birdie_Num_Num_Logo_1.png" alt="Logo" class="logo">
+    <p class="slogan">Satisfy Your Cravings with Just a Click!</p>
+    <a href="/menu" class="menu-link">Explore Menu</a>
+  </div>
+</body>
+</html>
+
+
+
+
+
