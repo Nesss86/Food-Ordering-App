@@ -16,7 +16,7 @@ const getOrders = () => {
 
 // Update order status (approve/reject)
 const updateOrderStatus = (orderId, status, timeToGetReady) => {
-  const queryString = `
+  let queryString = `
     UPDATE orders
     SET order_status = $2`
 
