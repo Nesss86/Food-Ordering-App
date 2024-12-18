@@ -4,7 +4,7 @@ TRUNCATE TABLE food_items RESTART IDENTITY CASCADE;
 -- Insert new seed data
 INSERT INTO food_items (id, name, category, price, image_path, is_available) VALUES
 (1, 'Apple Pie', 'desserts', 8.99, '/images/Apple_Pie.png', TRUE),
-(2, 'Brownie with Walnuts', 'desserts', 7.99, '/images/Brownie_with_Walnuts.png', TRUE),
+(2, 'Brownie with Walnuts', 'desserts', 7.99, '/images/Brownie_With_Walnuts.png', TRUE),
 (3, 'Caprese Salad', 'appetizers', 6.99, '/images/Caprese_Salad.png', TRUE),
 (4, 'Cheeseburger', 'main course', 10.99, '/images/Cheeseburger.png', TRUE),
 (5, 'Chocolate Cake', 'desserts', 9.49, '/images/Chocolate_Cake.png', TRUE),
@@ -27,7 +27,7 @@ INSERT INTO food_items (id, name, category, price, image_path, is_available) VAL
 (22, 'Sprinkle Donut', 'desserts', 2.99, '/images/Sprinkle_Donut.png', TRUE),
 (23, 'Strawberry Cheesecake', 'desserts', 9.99, '/images/Strawberry_Cheesecake.png', TRUE),
 (24, 'Stuffed Mushrooms', 'appetizers', 6.49, '/images/Stuffed_Mushrooms.png', TRUE),
-(25, 'Vanilla Ice Cream', 'desserts', 4.49, '/images/Vanilla_Ice_Cream.png', TRUE),
+(25, 'Vanilla Ice Cream', 'desserts', 4.49, '/images/Vanilla_Ice_cream.png', TRUE),
 (26, 'Veggie Burrito', 'main course', 8.99, '/images/Veggie_Burrito.png', TRUE),
 (27, 'Veggies with Hummus', 'appetizers', 5.49, '/images/Veggies_With_Hummus.png', TRUE),
 (28, 'Wings', 'appetizers', 9.99, '/images/Wings.png', TRUE);

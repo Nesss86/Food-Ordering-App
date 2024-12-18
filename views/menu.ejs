@@ -37,7 +37,7 @@
                   <img src="<%= item.image_path %>" alt="<%= item.name %>" class="img-fluid mb-2" style="height: 200px; object-fit: cover;">
                   <h4><%= item.name %></h4>
                   <p>$<%= item.price.toFixed(2) %></p>
-                  <button class="btn btn-primary" onclick="addToCart(<%= item.id %>, '<%= item.name %>', <%= item.price %>)">Add to Cart</button>
+                  <button class="btn btn-primary" onclick="addToCart('<%= item.id %>', '<%= item.name %>', '<%= item.price %>')">Add to Cart</button>
                 </div>
               <% }); %>
             </div>
