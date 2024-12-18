@@ -15,27 +15,30 @@ const getOrders = () => {
 };
 
 // Update order status (approve/reject)
-const updateOrderStatus = (orderId, status, timeToGetReady) => {
-  const queryString = `
+const updateOrderStatus = (orderId, status, readyAt = null) => {
+  let queryString = `
     UPDATE orders
-    SET order_status = $2`
+    SET order_status = $2`;
 
-    if (timeToGetReady !== undefined && timeToGetReady !== null) {
-      queryString += `, time_to_get_ready = $3`
-    }
+  const params = [orderId, status];
 
-    queryString += `WHERE id = $1;`
+  if (readyAt) {
+    queryString += `, ready_at = $3`;
+    params.push(readyAt);
+  }
 
-    const params = [orderId, status];
-    if (timeToGetReady !== undefined && timeToGetReady !== null) {
-      params.push(timeToGetReady);
-    }
+  queryString += ` WHERE id = $1 RETURNING *;`;
 
-  return db.query(queryString, params);
+  return db.query(queryString, params)
+    .then(res => res.rows[0]) // Return updated order
+    .catch(err => {
+      console.error(`Error updating order ${orderId}:`, err.message);
+      throw new Error("Failed to update order status.");
+    });
 };
 
 // Fetch order history with optional search
-const getOrderHistory = (search) => {
+const getOrderHistory = (search = '') => {
   const query = `
     SELECT
       orders.id AS order_id,
@@ -53,5 +56,5 @@ const getOrderHistory = (search) => {
   return db.query(query, [`%${search}%`]).then(res => res.rows);
 };
 
-module.exports = { getOrders, updateOrderStatus, getOrderHistory
-};
+module.exports = { getOrders, updateOrderStatus, getOrderHistory };
+

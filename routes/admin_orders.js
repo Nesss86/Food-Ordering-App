@@ -1,36 +1,49 @@
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 const adminOrderQueries = require('../db/queries/admin_orders');
 const createMessage = require('../sms');
 
+// Fetch all admin orders
 router.get('/', (req, res) => {
-  adminOrderQueries.getOrders() // A query to fetch all orders
+  adminOrderQueries.getOrders()
     .then(orders => res.json({ orders }))
-    .catch(err => res.status(500).json({ error: err.message }));
+    .catch(err => {
+      console.error("Error fetching orders:", err.message);
+      res.status(500).json({ error: "Failed to fetch orders." });
+    });
 });
 
+// Approve/Reject Order
 router.patch('/:id', (req, res) => {
-  const id  = req.params.id;
-  const status = req.body.status;
-  const timeToGetReady = req.body.ready_at;
-  const timeReadyInMinutes = parseInt(timeToGetReady, 10);
+  const id = req.params.id;
+  const { status, ready_at } = req.body;
 
-  adminOrderQueries.updateOrderStatus(id, status, timeToGetReady) // A query to update order status
-    .then(() => {
-      
+  // Validate status input
+  if (!['approved', 'rejected'].includes(status)) {
+    return res.status(400).json({ error: "Invalid status. Use 'approved' or 'rejected'." });
+  }
+
+  adminOrderQueries.updateOrderStatus(id, status, ready_at)
+    .then(updatedOrder => {
       if (status === 'approved') {
+        createMessage(`Order ${updatedOrder.id} approved. Ready in ${ready_at || '15'} minutes.`);
 
-        createMessage(`Your order will be ready in ${timeReadyInMinutes} minutes.`);
-        // const timeReady = function(orderReadyAt) {
-          // Use the orderReadyAt and calculate the time when the order is going to be ready
-        // }
-        setTimeout(() => createMessage(`Your order is ready`), timeReadyInMinutes * 60 * 1000);
+        if (ready_at) {
+          setTimeout(() => {
+            createMessage(`Order ${updatedOrder.id} is now ready!`);
+          }, parseInt(ready_at, 10) * 60 * 1000);
+        }
       } else if (status === 'rejected') {
-        createMessage(`Sorry but your order cannot be completed at this time.`);
+        createMessage(`Order ${updatedOrder.id} was rejected.`);
       }
-      res.sendStatus(200)
+      res.status(200).json({ message: `Order ${id} updated successfully to '${status}'.` });
     })
-   .catch(err => res.status(500).json({ error: err.message }));
+    .catch(err => {
+      console.error(`Error updating order ${id}:`, err.message);
+      res.status(500).json({ error: "Failed to update order status." });
+    });
 });
 
 module.exports = router;
+
+
