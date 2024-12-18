@@ -16,19 +16,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
           orderElement.innerHTML = `
             <p>Order #${order.id}: ${order.customerName} - ${order.foodName} (x${order.quantity})</p>
-            <button class="approve" data-id="${order.id}">Approve</button>
-            <button class="reject" data-id="${order.id}">Reject</button>
+            <button class="approve" data-id="${order.id}" data-status="approved">Approve</button>
+            <button class="reject" data-id="${order.id}" data-status="rejected">Reject</button>
           `;
 
           ordersContainer.appendChild(orderElement);
         });
       })
-      .catch((err) => console.error("Failed to fetch orders:", err));
+      .catch((err) => {
+        console.error("Failed to fetch orders:", err);
+        ordersContainer.innerHTML = "<p class='error'>Failed to load orders. Please try again later.</p>";
+      });
   };
 
   // Function to update order status
   const updateOrderStatus = (orderId, status) => {
-    fetch(`/api/orders/${orderId}`, {
+    return fetch(`/api/orders/${orderId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -36,36 +39,41 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({ status }),
     })
       .then((response) => {
-        if (response.ok) {
-          // Refetch the orders after status update
-          fetchOrders();
-        } else {
-          console.error(`Failed to update order ${orderId} to ${status}`);
+        if (!response.ok) {
+          throw new Error(`Failed to update order ${orderId} to ${status}`);
         }
+        return response.json();
       })
-      .catch((err) => console.error(`Error updating order ${orderId}:`, err));
+      .catch((err) => {
+        console.error(`Error updating order ${orderId}:`, err);
+        throw err;
+      });
   };
 
   // Event listener for approve/reject buttons
   ordersContainer.addEventListener("click", (event) => {
+    const button = event.target;
     const order = event.target.closest(".order");
 
-    if (event.target.classList.contains("approve")) {
-      const orderId = event.target.dataset.id;
+    if (button.classList.contains("approve") || button.classList.contains("reject")) {
+      const orderId = button.dataset.id;
+      const status = button.dataset.status;
 
-      // Update the backend and visually change the UI
-      updateOrderStatus(orderId, "approved");
-      order.innerHTML = `<p style="color: green;">Order Approved</p>`;
-    } else if (event.target.classList.contains("reject")) {
-      const orderId = event.target.dataset.id;
+      // Disable buttons to prevent multiple clicks
+      button.disabled = true;
 
-      // Update the backend and visually change the UI
-      updateOrderStatus(orderId, "rejected");
-      order.innerHTML = `<p style="color: red;">Order Rejected</p>`;
+      // Update the backend and refetch the orders
+      updateOrderStatus(orderId, status)
+        .then(() => fetchOrders()) // Refetch the orders to reflect changes
+        .catch(() => {
+          button.disabled = false; // Re-enable button on error
+          alert("Failed to update order. Please try again.");
+        });
     }
   });
 
   // Initial fetch of orders when page loads
   fetchOrders();
 });
+
 
