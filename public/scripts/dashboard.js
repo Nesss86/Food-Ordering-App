@@ -5,8 +5,9 @@ $(document).ready(() => {
       const ordersContainer = $('#orders-container');
       ordersContainer.empty();
       const pendingOrders = data.orders; // Pending orders
+
       pendingOrders.forEach(order => {
-        // Convert ISO string to a readable format
+        // Convert ISO string to a readable date and time
         const dateTime = new Date(order.time_placed).toLocaleString('en-US', {
           year: 'numeric',
           month: 'long',
@@ -14,14 +15,14 @@ $(document).ready(() => {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
-          hour12: true, // 12-hour format
+          hour12: true,
         });
 
+        // Create HTML for the order
         const orderHtml = `
-          <div class="order" data-id="${order.id}">
+          <div class="order" data-id="${order.order_id}">
             <p><strong>Customer:</strong> ${order.customername}</p>
-            <p><strong>Items:</strong> ${order.foodname}</p>
-            <p><strong>Quantity:</strong> ${order.quantity}</p>
+            <p><strong>Items:</strong> ${order.items}</p>
             <p><strong>Time Placed:</strong> ${dateTime}</p>
             <button class="approve-btn btn btn-success">Approve</button>
             <button class="reject-btn btn btn-danger">Reject</button>
