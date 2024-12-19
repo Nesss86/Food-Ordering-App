@@ -27,8 +27,8 @@ $(document).ready(() => {
               <p><strong>Customer:</strong> ${order.customername}</p>
               <p><strong>Items:</strong> ${order.items}</p>
               <p><strong>Time Placed:</strong> ${dateTime}</p>
-              <label for="readyAt-${order.order_id}"><strong>Time for order to get ready (in minutes):</strong></label>
-              <textarea id="readyAt-${order.order_id}" class="form-control" name="ready_at" rows="1" placeholder="Enter time"></textarea><br><br>
+              <label for="ready_at-${order.order_id}"><strong>Time for order to get ready (in minutes):</strong></label>
+              <textarea id="ready_at-${order.order_id}" class="form-control" name="ready_at" rows="1" placeholder="Enter time"></textarea><br><br>
               <button type="button" class="approve-btn btn btn-success">Approve</button>
               <button type="button" class="reject-btn btn btn-danger">Reject</button>
             </div>
@@ -55,19 +55,36 @@ $(document).ready(() => {
   };
 
 // Handle Approve/Reject Buttons
-$('#orders-container').on('click', '.approve-btn, .reject-btn', function () {
+$('#orders-container').on('click', '.approve-btn, .reject-btn', function (e) {
+  e.preventDefault(); // Prevent default form submission
+  
   const form = $(this).closest('form');
   const status = $(this).hasClass('approve-btn') ? 'approved' : 'rejected';
-  form.find('input[name="status"]').val(status); // Set the status in the hidden input
-  form.submit(); // Submit the form
+  const orderId = form.find('.order').data('id');
+  const ready_at = parseInt(form.find('textarea[name="ready_at"]').val(), 10);
+  const customer = form.find('p:contains("Customer:")').text().replace('Customer:', '').trim();
+  const items = form.find('p:contains("Items:")').text().replace('Items:', '').trim();
+
+  // Send AJAX request to update the order
   $.ajax({
-    url: `/api/orders/${orderId}`,
+    url: `/api/orders/${orderId}`, // Adjust route as necessary
     method: 'PATCH',
     contentType: 'application/json',
-    data: JSON.stringify({ status, ready_at: readyAt }),
-    success: () => {
-      updateOrderStatusTable(orderId, status, customer, items, readyAt ? `${readyAt} mins` : 'N/A');
-      parent.remove(); // Remove the order from "Manage Orders"
+    data: JSON.stringify({ status, ready_at: ready_at }),
+    success: (response) => {
+      console.log('Order update successful:', response);
+      // Update the Order Status Table dynamically
+      updateOrderStatusTable(
+        orderId, 
+        status, 
+        customer, 
+        items, 
+        ready_at ? `${ready_at} mins` : 'N/A'
+      );
+
+      // Remove the order box from the "Manage Orders" section
+      form.remove();
+      alert(`Order ${orderId} has been successfully ${status}!`);
     },
     error: (err) => {
       console.error(`Failed to update order ${orderId}:`, err.responseJSON?.error || err);
