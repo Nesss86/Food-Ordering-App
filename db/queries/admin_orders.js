@@ -3,19 +3,24 @@ const db = require('../connection');
 // Fetch 5 pending orders
 const getOrders = () => {
   return db.query(`
-    SELECT o.id, c.name AS customername, fi.name AS foodname, oi.quantity, o.time_placed
+    SELECT
+      o.id AS order_id,
+      c.name AS customername,
+      STRING_AGG(fi.name || ' x ' || oi.quantity, ', ') AS items,
+      o.time_placed
     FROM orders o
     JOIN customers c ON o.customer_id = c.id
     JOIN order_items oi ON o.id = oi.order_id
     JOIN food_items fi ON oi.food_id = fi.id
     WHERE o.order_status = 'pending'
+    GROUP BY o.id, c.name, o.time_placed
     ORDER BY o.time_placed DESC
     LIMIT 5;
   `).then(res => res.rows);
 };
 
 // Update order status (approve/reject)
-const updateOrderStatus = (orderId, status, timeToGetReady) => {
+const updateOrderStatus = (orderId, status, readyAt) => {
   let queryString = `
     UPDATE orders
     SET order_status = $2`;
