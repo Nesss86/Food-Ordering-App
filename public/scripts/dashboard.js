@@ -54,44 +54,44 @@ $(document).ready(() => {
     tableBody.append(rowHtml);
   };
 
-// Handle Approve/Reject Buttons
-$('#orders-container').on('click', '.approve-btn, .reject-btn', function (e) {
-  e.preventDefault(); // Prevent default form submission
-  
-  const form = $(this).closest('form');
-  const status = $(this).hasClass('approve-btn') ? 'approved' : 'rejected';
-  const orderId = form.find('.order').data('id');
-  const ready_at = parseInt(form.find('textarea[name="ready_at"]').val(), 10);
-  const customer = form.find('p:contains("Customer:")').text().replace('Customer:', '').trim();
-  const items = form.find('p:contains("Items:")').text().replace('Items:', '').trim();
+  // Handle Approve/Reject Buttons
+  $('#orders-container').on('click', '.approve-btn, .reject-btn', function (e) {
+    e.preventDefault(); // Prevent default form submission
 
-  // Send AJAX request to update the order
-  $.ajax({
-    url: `/api/orders/${orderId}`, // Adjust route as necessary
-    method: 'PATCH',
-    contentType: 'application/json',
-    data: JSON.stringify({ status, ready_at: ready_at }),
-    success: (response) => {
-      console.log('Order update successful:', response);
-      // Update the Order Status Table dynamically
-      updateOrderStatusTable(
-        orderId, 
-        status, 
-        customer, 
-        items, 
-        ready_at ? `${ready_at} mins` : 'N/A'
-      );
+    const form = $(this).closest('form');
+    const status = $(this).hasClass('approve-btn') ? 'approved' : 'rejected';
+    const orderId = form.find('.order').data('id');
+    const ready_at = parseInt(form.find('textarea[name="ready_at"]').val(), 10);
+    const customer = form.find('p:contains("Customer:")').text().replace('Customer:', '').trim();
+    const items = form.find('p:contains("Items:")').text().replace('Items:', '').trim();
 
-      // Remove the order box from the "Manage Orders" section
-      form.remove();
-      alert(`Order ${orderId} has been successfully ${status}!`);
-    },
-    error: (err) => {
-      console.error(`Failed to update order ${orderId}:`, err.responseJSON?.error || err);
-      alert(`Failed to update order ${orderId}. Please try again.`);
-    }
+    // Send AJAX request to update the order
+    $.ajax({
+      url: `/api/orders/${orderId}`, // Adjust route as necessary
+      method: 'PATCH',
+      contentType: 'application/json',
+      data: JSON.stringify({ status, ready_at: ready_at }),
+      success: (response) => {
+        console.log('Order update successful:', response);
+        // Update the Order Status Table dynamically
+        updateOrderStatusTable(
+          orderId,
+          status,
+          customer,
+          items,
+          ready_at ? `${ready_at} mins` : 'N/A'
+        );
+
+        // Remove the order box from the "Manage Orders" section
+        form.remove();
+        alert(`Order ${orderId} has been successfully ${status}!`);
+      },
+      error: (err) => {
+        console.error(`Failed to update order ${orderId}:`, err.responseJSON?.error || err);
+        alert(`Failed to update order ${orderId}. Please try again.`);
+      }
+    });
   });
-});
 
 
   // Inventory Section
