@@ -30,21 +30,52 @@ function updateCartView() {
 }
 
 // Function to submit order
-function submitOrder() {
+async function submitOrder() {
   if (cart.length === 0) {
     alert('Your cart is empty. Please add items to submit an order.');
     return;
   }
 
-  let orderSummary = 'Order Submitted!\n\nYour Items:\n';
-  cart.forEach(item => {
-    orderSummary += `${item.name} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
-  });
+  // Calculate total price
+  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  orderSummary += `\nTotal: $${cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}`;
-  alert(orderSummary);
+  // Prepare the order object
+  const order = {
+    time_placed: new Date().toISOString(), // Current timestamp
+    time_ready: null, // Placeholder for now, backend can set this if needed
+    order_status: 'pending', // Default status
+    total_price: totalPrice,
+    items: cart.map(item => ({
+      food_id: item.id, // Assuming each item in the cart has a unique ID
+      quantity: item.quantity
+    }))
+  };
 
-  console.log('Order:', cart);
-  cart = []; // Clear the cart
-  updateCartView();
+  try {
+    const response = await fetch('/customer_orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(order)
+    });
+    
+    console.log('Response status:', response.status); // Log status code
+    const responseBody = await response.json();
+    console.log('Response body:', responseBody); // Log response body
+    
+    if (!response.ok) {
+      alert(`Error submitting order: ${responseBody.error || 'Unknown error'}`);
+      return;
+    }
+    
+    alert('Order submitted successfully!');
+
+    // Clear the cart
+    cart = [];
+    updateCartView();
+  } catch (err) {
+    console.error('Error submitting order:', err);
+    alert('Failed to submit the order. Please try again.');
+  }
 }

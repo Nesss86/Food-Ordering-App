@@ -5,23 +5,33 @@ const createMessage =  require('../sms')
 
 // Post route for /orders
 router.post('/' , (req, res) => {
+
   const user_id = req.session.user_id;
   if(!user_id){
-    return res.send({ error: 'must be logged in to use this service'});
+    return res.status(400).send({ error: 'must be logged in to use this service' });
   }
 
   const newOrder = req.body;
+
+  if (!newOrder.items || newOrder.items.length === 0) {
+    return res.status(400).send({ error: 'Order must include items.' });
+  }
+
   newOrder.customer_id = user_id;
+
   customerOrderQueries
-   .addOrder(newOrder)
+   .addOrder(newOrder, newOrder.items)
    .then((order) => {
-    res.send(order);
+    console.log('Order data:', order);
+
     createMessage("New order has been placed 😊");
-   })
+    res.status(201).send({ id: order.id, message: 'Order created successfully' });
+  })
    .catch((e) => {
     console.error(e);
-   })
-})
+    res.status(500).send({ error: 'Failed to process the order.' });
+   });
+});
 
 // GET route for individual order
 router.get('/:id', (req, res) => {

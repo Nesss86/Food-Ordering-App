@@ -24,38 +24,63 @@ const getOrderById = (orderId) => {
 };
 
 const addOrder = (order, items) => {
-  const { customer_id, time_placed, time_ready, order_status, total_price } = order;
 
-  // inserting the order into the "Orders" table
-  return db.query(
-    `INSERT INTO Orders (customer_id, time_placed, time_ready, order_status, total_price)
-     VALUES ($1, $2, $3, $4, $5)
-     RETURNING ID;`,
-    [customer_id, time_placed, time_ready, order_status, total_price]
-  )
+  const { customer_id, time_placed, order_status, total_price } = order;
+
+  // Ensure the sequence is in sync with the current orders in the database
+  const checkAndFixSequence = () => {
+    return db.query('SELECT setval(\'orders_id_seq\', (SELECT COALESCE(MAX(id), 0) FROM orders));');
+  };
+
+  // Check if the order already exists
+  const checkExistingOrder = (customerId, timePlaced, orderStatus) => {
+    return db.query(
+      `SELECT id FROM orders WHERE customer_id = $1 AND time_placed = $2 AND order_status = $3 LIMIT 1;`,
+      [customerId, timePlaced, orderStatus]
+    );
+  };
+
+  // Ensure sequence is fixed before inserting
+  return checkAndFixSequence()
+    .then(() => checkExistingOrder(customer_id, time_placed, order_status))
+    .then((existingOrderResult) => {
+      if (existingOrderResult.rows.length > 0) {
+        console.log('Order already exists, skipping insertion.');
+        return existingOrderResult.rows[0].id;
+      }
+
+      // inserting the order into the "Orders" table
+      return db.query(
+        `INSERT INTO orders (customer_id, time_placed, order_status, total_price)
+         VALUES ($1, $2, $3, $4)
+         RETURNING id;`,
+        [customer_id, time_placed, order_status, total_price]
+      );
+    })
     .then((orderResult) => {
       const orderId = orderResult.rows[0].id;
+      console.log(`Inserted order ID: ${orderId}`);
 
       // Prepare the query for inserting items into "Order_Items"
       const itemInsertPromises = items.map((item) => {
-        const { food_id, quantity } = item;
-
+        const foodId = parseInt(item.food_id, 10); // Convert to integer
+        const quantity = item.quantity;
+      
         return db.query(
-          `INSERT INTO Order_Items (order_id, food_id, quantity)
+          `INSERT INTO order_items (order_id, food_id, quantity)
            VALUES ($1, $2, $3);`,
-          [orderId, food_id, quantity]
-        );
+          [orderId, foodId, quantity]
+        ).catch((err) => {
+          console.error(`Error inserting item ${JSON.stringify(item)}:`, err.message);
+          throw err;
+        });
       });
 
       // Execute all item insert queries
       return Promise.all(itemInsertPromises).then(() => orderId);
     })
-    .then((orderId) => {
-      console.log(`Order ${orderId} and all items added successfully.`);
-      return { success: true, orderId };
-    })
     .catch((err) => {
-      console.error("Error adding order and items:", err.message);
+      console.error("SQL Error in addOrder:", err.stack || err.message);
       throw err;
     });
 };
