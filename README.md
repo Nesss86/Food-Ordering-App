@@ -19,6 +19,9 @@ Birdie Num Num is a modern food ordering app designed to make ordering food seam
 - Database: PostgreSQL
 - SMS Integration: Twilio API
 
+### Landing Page
+![Landing](public/images/Landing Page.png)
+
 
 ## Dependencies
 The app uses the following dependencies:
