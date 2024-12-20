@@ -20,7 +20,7 @@ Birdie Num Num is a modern food ordering app designed to make ordering food seam
 - SMS Integration: Twilio API
 
 ### Landing Page
-![Landing](/public/images/Landing_Page.png)
+![Landing Page](/public/images/Landing_Page.png)
 
 
 ## Dependencies
