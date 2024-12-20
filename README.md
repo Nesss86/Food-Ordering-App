@@ -1,4 +1,4 @@
- Food Order App  <img src="public/images/Birdie_Num_Num_Logo_1.png" alt="Birdie Num Num Logo" width="50" height="50"/>
+ Food Ordering App  <img src="public/images/Birdie_Num_Num_Logo_1.png" alt="Birdie Num Num Logo" width="50" height="50"/>
 =========
 ## Birdie Num Num  
 
