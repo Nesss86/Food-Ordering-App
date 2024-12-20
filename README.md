@@ -30,19 +30,8 @@ Birdie Num Num is a modern food ordering app designed to make ordering food seam
 ![Menu Page](public/images/Menu.png)
 
 
-
-### Order Total
-![Order Total](public/images/Order_Total.png)
-
-
-
 ### Order Submitted
 ![Order Submitted](public/images/Order_Submitted.png)
-
-
-
-### Manage Orders
-![Manage Orders](public/images/Manage_Orders.png)
 
 
 
