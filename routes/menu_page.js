@@ -20,3 +20,5 @@ router.get('/', (req,res) => {
 });
 
 module.exports = router;
+
+// We are using menu.js routes instead of this file

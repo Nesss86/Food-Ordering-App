@@ -36,9 +36,9 @@ app.use(express.static(__dirname + '/public'));
 // Routes
 const ordersApiRoutes = require('./routes/orders-api');
 const inventoryApiRoutes = require('./routes/inventory-api');
-const menuPageRoutes = require('./routes/menu_page');
+//const menuPageRoutes = require('./routes/menu_page');
 const customerOrderRoutes = require('./routes/customer_orders');
-const adminOrderRoutes = require('./routes/admin_orders');
+//const adminOrderRoutes = require('./routes/admin_orders');
 const userRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin');
 const rootRoutes = require('./routes/root'); // New file for '/' route
@@ -46,9 +46,9 @@ const menuRoutes = require('./routes/menu'); // New file for '/menu' route
 
 app.use('/api/orders', ordersApiRoutes);
 app.use('/api/inventory', inventoryApiRoutes);
-app.use('/menu_page', menuPageRoutes);
+//app.use('/menu_page', menuPageRoutes);
 app.use('/customer_orders', customerOrderRoutes);
-app.use('/admin_orders', adminOrderRoutes);
+//app.use('/admin_orders', adminOrderRoutes);
 app.use('/users', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/', rootRoutes); // Root route

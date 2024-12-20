@@ -24,7 +24,7 @@ router.post('/' , (req, res) => {
    .then((order) => {
     console.log('Order data:', order);
 
-    createMessage("New order has been placed 😊");
+    createMessage("New order has been placed successfully!😊😊😊");
     res.status(201).send({ id: order.id, message: 'Order created successfully' });
   })
    .catch((e) => {

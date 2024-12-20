@@ -44,6 +44,11 @@ h1, h2, h3, h4, h5 {
   color: #a9b8bd; /* Secondary color */
 }
 
+.nav-logo {
+  display: flex;
+  justify-content:flex-end;
+  align-items: center;
+}
 /* Logo Styling */
 .nav-logo img {
   width: 100px;

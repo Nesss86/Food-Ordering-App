@@ -17,7 +17,7 @@ router.get('/login/:id', (req, res) => {
   // using encrypted cookies
   req.session.user_id = req.params.id;
   // send the user somewhere
-  res.redirect('/');
+  res.redirect('/menu');
 });
 
 // Route for logout
