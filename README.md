@@ -10,3 +10,11 @@ Birdie Num Num is a modern food ordering app designed to make ordering food seam
 - Real-Time Notifications: Customers are kept informed via SMS—whether their order is approved, rejected, or ready for pickup.
 - Order Analytics: Easily search orders by customer or dish to gain insights into trends and preferences.
 - Inventory Management: Track stock levels to ensure items are available and orders are fulfilled.
+
+
+
+## Technologies Used
+- Front-End: HTML, CSS, JavaScript (jQuery, Bootstrap)
+- Back-End: Node.js, Express.js
+- Database: PostgreSQL
+- SMS Integration: Twilio API
