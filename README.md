@@ -23,12 +23,12 @@ Birdie Num Num is a modern food ordering app designed to make ordering food seam
 ## Dependencies
 The app uses the following dependencies:
 
-body-parser: ^1.20.3
-chalk: ^2.4.2
-cookie-session: ^2.1.0
-dotenv: ^2.0.0
-ejs: ^2.6.2
-express: ^4.21.2
-morgan: ^1.9.1
-pg: ^8.13.1
-twilio: ^5.4.0
+- body-parser: ^1.20.3
+- chalk: ^2.4.2
+- cookie-session: ^2.1.0
+- dotenv: ^2.0.0
+- ejs: ^2.6.2
+- express: ^4.21.2
+- morgan: ^1.9.1
+- pg: ^8.13.1
+- twilio: ^5.4.0
