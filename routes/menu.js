@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
         acc[item.category].push(item);
         return acc;
       }, {});
-      res.render('menu', { foodItems }); // Pass food items to EJS template
+      res.render('menu', { foodItems, user_id: req.session.user_id }); // Pass food items to EJS template
     })
     .catch(err => {
       console.error("Error fetching menu items:", err.message);

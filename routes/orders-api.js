@@ -52,19 +52,19 @@ router.patch('/:id', (req, res) => {
   ordersQueries.updateOrderStatus(id, status, ready_at)
     .then(updatedOrder => {
       if (status === 'approved') {
-        createMessage(`Order ${updatedOrder.id} approved. Ready in ${ready_at || '15'} minutes.`)
+        createMessage(`Hurray! Order approved. Your food will be ready in ${ready_at || '15'} minutes.`)
           .then(() => console.log('Approval message sent successfully.'))
           .catch(err => console.error('Error sending approval message:', err));
 
         if (ready_at) {
           setTimeout(() => {
-            createMessage(`Order ${updatedOrder.id} is now ready!`)
+            createMessage(`Order is now ready for pickup!😋😋😋`)
               .then(() => console.log('Ready notification sent successfully.'))
               .catch(err => console.error('Error sending ready notification:', err));
           }, parseInt(ready_at, 10) * 60 * 1000);
         }
       } else if (status === 'rejected') {
-        createMessage(`Sorry but your order cannot be completed at this time, the staff is too lazy.`)
+        createMessage(`Unfortunately your order cannot be completed at this time, the staff is too lazy.`)
           .then(() => console.log('Rejection message sent successfully.'))
           .catch(err => console.error('Error sending rejection message:', err));
       }

@@ -7,6 +7,9 @@ router.get('/', (req, res) => {
 
 // to be changed to admin/dashboard
 router.get('/dashboard', (req, res) => {
+  if(req.session.user_id !== '1'){
+    res.redirect('/menu');
+  }
   res.render('admin_dashboard');
 });
 
